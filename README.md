@@ -203,6 +203,40 @@ BSG 원본 이름으로 컴파일되고, SPT가 바꾼 이름은 전부 "찾을 
 패치가 돌아갑니다. 난독화기 이름이 아니라 실제 이름이라 위험은 낮고, 틀려도 이제는
 그 패치 하나만 실패하고 로그에 이름이 나옵니다.
 
+## 혈흔 데칼 NRE (2026-09-15)
+
+한 라이드에서 같은 예외가 6번 나왔습니다:
+
+```
+NullReferenceException
+  HollywoodFX.Patches.TextureDecalsPainterVisCheckPatch.Prefix   ← IL 오프셋 0
+  TextureDecalsPainter.DrawDecal
+  Systems.Effects.Effects.PlayerMeshesHit
+  EFT.Player.ShotReactions
+```
+
+**IL 오프셋이 0**입니다. 메서드의 첫 역참조, 즉 `objRenderer` 자체가 `null` 이라는
+뜻입니다.
+
+이 패치는 LOD 전환 때문에 데칼이 안 보이는 걸 고치려고 원본의 `objRenderer.isVisible`
+검사를 빼버린 건데, **그 검사가 생존 확인도 겸하고 있었습니다.** BSG는 이걸
+`DrawDecal` 에서 부르고, `DrawDecal` 은 `Effects.PlayerMeshesHit` 가 넘겨준
+`List<Renderer>` 를 훑습니다. 총 맞는 그 프레임에 컬링되거나 파괴되는 바디가
+섞이면 원본은 `isVisible == false` 로 빠져나갔는데, 우리는 그대로 머티리얼까지
+들어갑니다. 같은 로그의 비슷한 시각에 `EFT.Player.Dispose` 와
+`OfflinePlayerCulling.ApplyVisibleState` 가 같이 터지고 있는 게 그 바디입니다.
+
+고친 것:
+
+- `objRenderer == null` 이면 `false` 반환. Unity 오버로드 `==` 라서 **파괴된**
+  렌더러도 같이 걸러집니다
+- 머티리얼과 셰이더도 `null` 체크
+- `material` → **`sharedMaterial`**. 읽기 전용 판정인데 `Renderer.material` 은 물어보는
+  렌더러마다 머티리얼 사본을 새로 만들어서, 셰이더 이름 한 줄 읽자고 그 렌더러를
+  배칭에서 영구히 빼버립니다. 이미 사본이 있으면 `sharedMaterial` 이 그 사본을
+  돌려주므로 판정 결과는 같고, 머티리얼이 아예 없는 렌더러에서는 `null` 이 나와서
+  위 체크에 걸립니다 (`material` 은 여기서 예외를 던졌습니다)
+
 ## 남은 위험
 
 **없다시피 합니다.** 난독화기 스타일 이름이 코드에 0개고 전부 진짜 이름이라, 다음
