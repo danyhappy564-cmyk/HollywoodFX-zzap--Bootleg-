@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using EFT.CameraControl;
 using HollywoodFX.Helpers;
 using UnityEngine;
 using EFT.CameraControl;

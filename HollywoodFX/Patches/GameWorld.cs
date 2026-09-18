@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Comfort.Common;
 using EFT;
+using EFT.Ballistics;
+using EFT.CameraControl;
 using HollywoodFX.Gore;
 using HollywoodFX.Lighting;
 using SPT.Reflection.Patching;

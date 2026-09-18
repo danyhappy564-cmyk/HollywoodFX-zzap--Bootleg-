@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using BepInEx.Bootstrap;
 using BepInEx.Configuration;
+using EFT.CameraControl;
 using UnityEngine;
 using EFT.CameraControl;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Comfort.Common;
 using EFT.Ballistics;
+using EFT.InventoryLogic;
 using HollywoodFX.Particles;
 using HollywoodFX.Render;
 using Systems.Effects;

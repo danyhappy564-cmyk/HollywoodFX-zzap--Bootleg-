@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Comfort.Common;
 using DeferredDecals;
 using EFT.Ballistics;
+using EFT.InventoryLogic;
 using HarmonyLib;
 using HollywoodFX.Decal;
 using HollywoodFX.Particles;

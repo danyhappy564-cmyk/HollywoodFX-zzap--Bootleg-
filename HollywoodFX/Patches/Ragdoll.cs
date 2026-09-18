@@ -45,11 +45,8 @@ internal class PlayerPoolObjectRoleModelPostfixPatch : ModulePatch
                 $"Adjusting rigidbody spawner: {spawner.name}"
             );
 
-            if (!DragOverrides.TryGetValue(spawner.name, out var drag))
-                drag = 1f;
-
-            if (!MassFactors.TryGetValue(spawner.name, out var mass))
-                mass = 1f;
+            var drag = DragOverrides.GetValueOrDefault(spawner.name, 1f);
+            var mass = MassFactors.GetValueOrDefault(spawner.name, 1f);
 
             spawner.angularDrag = 0f;
             spawner.drag = drag;
@@ -123,7 +120,7 @@ internal class PlayerRigidbodySleepHierarchyTryPutToSleepPrefixPatch : ModulePat
     {
         // There's a NRE triggered in CanSleep sometimes when a dead body ragdoll is reactivated and the game tries to put it to sleep again.
         if (__instance.RigidbodySpawner.Rigidbody != null) return true;
-        
+
         __result = true;
         __instance.MustBeSleeping = true;
         return false;

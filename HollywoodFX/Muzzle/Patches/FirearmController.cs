@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Comfort.Common;
 using EFT;
+using EFT.InventoryLogic;
 using HollywoodFX.Patches;
 using SPT.Reflection.Patching;
 using EFT.InventoryLogic;

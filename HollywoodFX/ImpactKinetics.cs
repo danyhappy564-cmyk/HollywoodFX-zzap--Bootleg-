@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using EFT.Ballistics;
+using EFT.CameraControl;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using EFT.CameraControl;

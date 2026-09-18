@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using EFT.CameraControl;
+using EFT.InventoryLogic;
 using HollywoodFX.Particles;
 using Systems.Effects;
 using UnityEngine;

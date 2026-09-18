@@ -32,12 +32,12 @@ internal class WeaponPrefabInitHotObjectsPostfixPatch : ModulePatch
         
         if (__instance.ObjectInHands is not Firearms firearms)
             return;
-        
+
         if (____player == null)
             return;
-        
+
         var firearmsEffectsId = firearms.FirearmsEffects.transform.GetInstanceID();
-        
+
         if (!cache.TryGetValue(firearmsEffectsId, out var muzzleManager))
         {
             muzzleManager = Traverse.Create(firearms.FirearmsEffects).Field("_muzzleManager").GetValue<MuzzleManager>();
